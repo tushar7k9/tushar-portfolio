@@ -4,12 +4,12 @@ import {
 } from "react-vertical-timeline-component";
 
 import CTA from "./CTA";
-import { experiences, skills } from "../../constants";
-import Tech from "./Skills";
+import { experiences } from "../../constants";
 
 import "react-vertical-timeline-component/style.min.css";
 import styled from 'styled-components';
-import { useEffect } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
+import Tech from "./Tech";
 
 interface IAboutProps {
   setIsHome: Dispatch<SetStateAction<boolean>>;
@@ -96,7 +96,7 @@ const About: React.FC<IAboutProps> = ({ setIsHome }) => {
 
         <div className='mt-12 flex'>
           <VerticalTimeline>
-            {experiences.map((experience, index) => (
+            {experiences.map((experience) => (
               <>
                 <VerticalTimelineElement
                   key={experience.company_name}
@@ -105,6 +105,7 @@ const About: React.FC<IAboutProps> = ({ setIsHome }) => {
                   icon={
                     <div className='flex justify-center items-center w-full h-full'>
                       <StyledImage
+                        key={`index-${experience.company_name}`}
                         src={experience.icon}
                         alt={experience.company_name}
                         className='w-[60%] h-[60%] object-contain'

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, Dispatch, SetStateAction } from 'react';
 import './ThemeModal.scss'; // Make sure to create a CSS file for the styles
 import Island from '../../assets/themeImage/island.png';
 import Island2 from '../../assets/themeImage/island2.png';
@@ -29,9 +29,9 @@ const ThemeModal: React.FC<IThemeModalProps> = ({ isThemeOpen, setIsThemeOpen, s
     };
   }, []);
 
-    const handleImageClick = (index: number) => {
-        setSelectedTheme(index);
-    };
+    // const handleImageClick = (index: number) => {
+    //     setSelectedTheme(index);
+    // };
 
   return (
     <>

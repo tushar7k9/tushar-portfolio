@@ -2,13 +2,12 @@ import { motion } from "framer-motion";
 
 import { styles } from "./styles";
 import { staggerContainer } from "../utils/motion";
-import { JSX } from "react/jsx-runtime";
 
-const StarWrapper = (Component, idName: string | undefined) =>
-  function HOC() {
+const StarWrapper = (
+  Component: () => JSX.Element, idName: string ) => {
     return (
       <motion.section
-        variants={staggerContainer()}
+        variants={staggerContainer(0.2, 0.1)}
         initial='hidden'
         whileInView='show'
         viewport={{ once: true, amount: 0.25 }}
@@ -21,6 +20,6 @@ const StarWrapper = (Component, idName: string | undefined) =>
         <Component />
       </motion.section>
     );
-  };
+}
 
 export default StarWrapper;

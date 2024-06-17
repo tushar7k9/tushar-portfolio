@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import { Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
 import {
   Decal,
@@ -10,7 +10,7 @@ import {
 
 import CanvasLoader from "./CanvasLoader";
 
-const Ball = (props: { imgUrl: any; }) => {
+const Ball = (props: { imgUrl: string; }) => {
   const [decal] = useTexture([props.imgUrl]);
 
   return (
@@ -36,7 +36,7 @@ const Ball = (props: { imgUrl: any; }) => {
   );
 };
 
-const BallCanvas = ({ icon }) => {
+const BallCanvas = (props: { icon: string }) => {
   return (
     <Canvas
       frameloop='always'
@@ -45,7 +45,7 @@ const BallCanvas = ({ icon }) => {
     >
       <Suspense fallback={<CanvasLoader />}>
         <OrbitControls enableZoom={false} />
-        <Ball imgUrl={icon} />
+        <Ball imgUrl={props.icon} />
       </Suspense>
 
       <Preload all />

@@ -1,32 +1,47 @@
 import { a } from "@react-spring/three";
-import { useEffect, useRef } from "react";
+import { RefObject, useEffect, useRef } from "react";
 import { useGLTF } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
+import { Group, Material, MeshStandardMaterial, } from "three";
+import { GLTF } from 'three-stdlib'
 
-import islandScene from "../assets/3d/island.glb";
+type GLTFResult = GLTF & {
+  nodes: {
+    polySurface944_tree_body_0: any;
+    polySurface945_tree1_0: any;
+    polySurface946_tree2_0: any;
+    polySurface947_tree1_0: any;
+    polySurface948_tree_body_0: any;
+    polySurface949_tree_body_0: any;
+    pCube11_rocks1_0: any;
+  }
+  materials: {
+    PaletteMaterial001: Material | Material[] | undefined;
+    Environment: Material | Material[] | undefined;
+    Sand: Material | Material[] | undefined;
+    ['Material.001']: MeshStandardMaterial
+  }
+}
 
 interface IslandProps {
   isRotating: boolean;
   setIsRotating: React.Dispatch<React.SetStateAction<boolean>>;
   setCurrentStage: (stage: number) => void;
-  currentFocusPoint: string;
   // Include any other props that might be passed to the component
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 const Island: React.FC<IslandProps> = ({
   isRotating,
   setIsRotating,
   setCurrentStage,
-  currentFocusPoint,
   ...props
 }) => {
 
-
-    const islandRef = useRef();
+    const islandRef = useRef<Group>() as RefObject<Group>;
     // Get access to the Three.js renderer and viewport
     const { gl, viewport } = useThree();
-    const { nodes, materials } = useGLTF(islandScene);
+    const { nodes, materials } = useGLTF('src/assets/3d/island.glb') as GLTFResult;
 
     // Use a ref for the last mouse x position
     const lastX = useRef(0);
@@ -36,14 +51,18 @@ const Island: React.FC<IslandProps> = ({
     const dampingFactor = 0.95;
 
     // Handle pointer (mouse or touch) down event
-    const handlePointerDown = (event: { stopPropagation: () => void; preventDefault: () => void; touches: { clientX: any; }[]; clientX: any; }) => {
+    const handlePointerDown = (event: PointerEvent| TouchEvent) => {
         event.stopPropagation();
         event.preventDefault();
         setIsRotating(true);
 
+        let clientX: number | undefined;
         // Calculate the clientX based on whether it's a touch event or a mouse event
-        const clientX = event.touches ? event.touches[0].clientX : event.clientX;
-
+        if ('touches' in event) {
+            clientX = event.touches[0].clientX;
+        } else {
+            clientX = event.clientX;
+        }
         // Store the current clientX position for reference
         lastX.current = clientX;
     };
@@ -56,15 +75,21 @@ const Island: React.FC<IslandProps> = ({
     };
 
     // Handle pointer (mouse or touch) move event
-    const handlePointerMove = (event: { stopPropagation: () => void; preventDefault: () => void; touches: { clientX: any; }[]; clientX: any; }) => {
+    const handlePointerMove = (event: PointerEvent | TouchEvent) => {
         event.stopPropagation();
         event.preventDefault();
         if (isRotating) {
-        // If rotation is enabled, calculate the change in clientX position
-        const clientX = event.touches ? event.touches[0].clientX : event.clientX;
+        let clientX: number | undefined;
+          // If rotation is enabled, calculate the change in clientX position
+          if ('touches' in event) {
+              clientX = event.touches[0].clientX;
+          } else {
+              clientX = event.clientX;
+          }
 
         // calculate the change in the horizontal position of the mouse cursor or touch input,
         // relative to the viewport's width
+        if (typeof clientX === "number" && islandRef.current) {
         const delta = (clientX - lastX.current) / viewport.width;
 
         // Update the island's rotation based on the mouse/touch movement
@@ -76,6 +101,7 @@ const Island: React.FC<IslandProps> = ({
         // Update the rotation speed
         rotationSpeed.current = delta * 0.01 * Math.PI;
         }
+        }
     };
 
     // Handle keydown events
@@ -83,12 +109,12 @@ const Island: React.FC<IslandProps> = ({
         if (event.key === "ArrowLeft") {
             if (!isRotating) setIsRotating(true);
 
-            islandRef.current.rotation.y += 0.01 * Math.PI;
+             if(islandRef.current) islandRef.current.rotation.y += 0.01 * Math.PI;
             rotationSpeed.current = 0.0125;
         } else if (event.key === "ArrowRight") {
             if (!isRotating) setIsRotating(true);
 
-            islandRef.current.rotation.y -= 0.01 * Math.PI;
+             if(islandRef.current) islandRef.current.rotation.y -= 0.01 * Math.PI;
             rotationSpeed.current = -0.0125;
         }
     };
@@ -101,12 +127,18 @@ const Island: React.FC<IslandProps> = ({
     };
 
     // Touch events for mobile devices
-    const handleTouchStart = (e: { stopPropagation: () => void; preventDefault: () => void; touches: { clientX: any; }[]; clientX: any; }) => {
+    const handleTouchStart = (e: PointerEvent | TouchEvent) => {
         e.stopPropagation();
         e.preventDefault();
         setIsRotating(true);
     
-        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        let clientX: number | undefined;
+
+        if ('touches' in e) {
+            clientX = e.touches[0].clientX;
+        } else {
+            clientX = e.clientX;
+        }
         lastX.current = clientX;
     }
     
@@ -116,17 +148,26 @@ const Island: React.FC<IslandProps> = ({
         setIsRotating(false);
     }
     
-    const handleTouchMove = (e: { stopPropagation: () => void; preventDefault: () => void; touches: { clientX: any; }[]; clientX: any; }) => {
+    const handleTouchMove = (e: PointerEvent | TouchEvent) => {
         e.stopPropagation();
         e.preventDefault();
     
         if (isRotating) {
-        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        let clientX: number | undefined;
+
+          if ('touches' in e) {
+              clientX = e.touches[0].clientX;
+          } else {
+              clientX = e.clientX;
+          }
+
+          if (typeof clientX === "number" && islandRef.current) {
         const delta = (clientX - lastX.current) / viewport.width;
     
         islandRef.current.rotation.y += delta * 0.01 * Math.PI;
         lastX.current = clientX;
         rotationSpeed.current = delta * 0.01 * Math.PI;
+          }
         }
     }
 
@@ -167,8 +208,8 @@ const Island: React.FC<IslandProps> = ({
             rotationSpeed.current = 0;
         }
 
-        islandRef.current.rotation.y += rotationSpeed.current;
-        } else {
+        if(islandRef.current)  islandRef.current.rotation.y += rotationSpeed.current;
+        } else if(islandRef.current){
         // When rotating, determine the current stage based on island's orientation
         const rotation = islandRef.current.rotation.y;
 
@@ -206,7 +247,6 @@ const Island: React.FC<IslandProps> = ({
             setCurrentStage(1);
             break;
             default:
-            setCurrentStage(null);
         }
         }
     });

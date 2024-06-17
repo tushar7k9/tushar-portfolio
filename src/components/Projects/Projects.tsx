@@ -1,10 +1,7 @@
-import { Link } from "react-router-dom";
-
 import CTA from "../About/CTA";
 import { projects } from "../../constants";
-import { arrow } from "../../assets/icons";
 import CarouselProject from "./3dCarouselProject";
-import { useEffect } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 
 interface IProjectsProps {
   setIsHome: Dispatch<SetStateAction<boolean>>;

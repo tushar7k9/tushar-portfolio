@@ -1,12 +1,18 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import { TiChevronLeftOutline, TiChevronRightOutline } from 'react-icons/ti';
 import "./3dCarouselProject.scss";
-import { arrow } from "../../assets/icons";
+import arrow from "../../assets/icons/arrow.svg";
 import { Link } from "react-router-dom";
-import ConfirmButton from "../ConfirmButton/ConfirmButton";
 import styled from 'styled-components';
-import { Box } from "@react-three/drei";
 
+declare global {
+  interface CSSStyleDeclaration {
+    "--active"?: string;
+    "--offset"?: string;
+    "--direction"?: string;
+    "--abs-offset"?: string;
+  }
+}
 
 let MAX_VISIBILITY = 3;
 
@@ -105,23 +111,34 @@ const ButtonBack = styled.div`
   }
 `;
 
-const CustomButton = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: fit-content;
-  padding: 10px;
-  border-radius: 7px;
-  background-color: #C4CEE5;
-  color: #3d588f;
-  cursor: pointer;
-  &:hover {
-    background-color: #4d6fb3;
-    color: #fff;
-  }
-`;
+// const CustomButton = styled.div`
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   width: fit-content;
+//   padding: 10px;
+//   border-radius: 7px;
+//   background-color: #C4CEE5;
+//   color: #3d588f;
+//   cursor: pointer;
+//   &:hover {
+//     background-color: #4d6fb3;
+//     color: #fff;
+//   }
+// `;
 
-const Card = ({ title, content, iconUrl, theme, link, linkType, isExpanded, setIsExpanded}) => { 
+interface ICardProps {
+  title: string
+  content: string[]
+  iconUrl: string
+  theme: string
+  link: string
+  linkType: string
+  isExpanded: boolean
+  setIsExpanded: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+const Card: React.FC<ICardProps> = ({ title, content, iconUrl, theme, link, linkType, isExpanded, setIsExpanded }) => { 
 
   const [isOpen, setIsOpen] = useState(false);
   const [direction, setDirection] = useState('');
@@ -155,7 +172,7 @@ const Card = ({ title, content, iconUrl, theme, link, linkType, isExpanded, setI
     return Math.sqrt(dx * dx + dy * dy);
   };
 
-  const handleYesClick = () => setIsOpen(false);
+  // const handleYesClick = () => setIsOpen(false);
   const handleNoClick = () => {
     setIsExpanded(false);
     setIsOpen(false);
@@ -168,7 +185,7 @@ const Card = ({ title, content, iconUrl, theme, link, linkType, isExpanded, setI
     }
   }
 
-  const boxRef = useRef(null);
+  // const boxRef = useRef(null);
 
   const handleExpandClick = () => {
     setIsExpanded(!isExpanded);
@@ -264,7 +281,10 @@ const Card = ({ title, content, iconUrl, theme, link, linkType, isExpanded, setI
   )
 };
 
-const Carousel = ({ children, isExpanded, setIsExpanded }) => {
+type CustomCSSProperties = React.CSSProperties & { [key: string]: string | number };
+
+
+const Carousel = ({ children, isExpanded }: { children: ReactNode, isExpanded: boolean }) => {
   const [active, setActive] = useState(0);
   const count = React.Children.count(children);
 
@@ -274,6 +294,18 @@ const Carousel = ({ children, isExpanded, setIsExpanded }) => {
 
   const handleRightClick = () => {
     setActive((i) => i + 1);
+  };
+
+  const customStyles: (i: number) => CustomCSSProperties = (i: number) => {
+    return {
+      "--active": i === active ? 1 : 0,
+      "--offset": (active - i) / 3,
+      "--direction": Math.sign(active - i),
+      "--abs-offset": Math.abs(active - i) / 3,
+      pointerEvents: active === i ? "auto" : "none",
+      opacity: Math.abs(active - i) >= MAX_VISIBILITY ? "0" : "1",
+      display: Math.abs(active - i) > MAX_VISIBILITY ? "none" : "block",
+    }
   };
 
   return (
@@ -287,15 +319,7 @@ const Carousel = ({ children, isExpanded, setIsExpanded }) => {
       {React.Children.map(children, (child, i) => (
         <div
           className={`card-container ${isExpanded ? 'expanded' : ''}`}
-          style={{
-            "--active": i === active ? 1 : 0,
-            "--offset": (active - i) / 3,
-            "--direction": Math.sign(active - i),
-            "--abs-offset": Math.abs(active - i) / 3,
-            pointerEvents: active === i ? "auto" : "none",
-            opacity: Math.abs(active - i) >= MAX_VISIBILITY ? "0" : "1",
-            display: Math.abs(active - i) > MAX_VISIBILITY ? "none" : "block",
-          }}
+          style={{ ...customStyles(i) }}
         >
           {child}
         </div>
@@ -330,8 +354,7 @@ const CarouselProject: React.FC<ICarouselProjectProps> = ({ projects }) => {
   return (
     <div className="carousel-wrapper">
       <div className="carousel-container">
-        <Carousel isExpanded={isExpanded}
-              setIsExpanded={setIsExpanded}>
+        <Carousel isExpanded={isExpanded}>
           {projects.map((project, index) => (
             <Card
               key={index}

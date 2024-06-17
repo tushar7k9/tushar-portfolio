@@ -1,25 +1,25 @@
 import emailjs from "@emailjs/browser";
 import { Canvas } from "@react-three/fiber";
-import { Suspense, useEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, Suspense, useEffect, useRef, useState } from "react";
 
 import Fox from "../../models/Fox";
 import useAlert from "../../hooks/useAlert";
 import Alert from "../Alert/Alert";
 import Loader from "../Loader/Loader";
-import HumanSkull from "../../models/HumanSkull";
 
 interface IContactsProps {
   setIsHome: Dispatch<SetStateAction<boolean>>;
 }
 
 const Contact: React.FC<IContactsProps> = ({ setIsHome }) => {
-  const formRef = useRef();
+  const formRef = useRef<HTMLFormElement>(null);
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const { alert, showAlert, hideAlert } = useAlert();
   const [loading, setLoading] = useState(false);
   const [currentAnimation, setCurrentAnimation] = useState("idle");
 
-  const handleChange = ({ target: { name, value } }) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
     setForm({ ...form, [name]: value });
   };
 
@@ -30,7 +30,7 @@ const Contact: React.FC<IContactsProps> = ({ setIsHome }) => {
     setIsHome(false);
   })
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     setLoading(true);
     setCurrentAnimation("hit");
@@ -52,20 +52,19 @@ const Contact: React.FC<IContactsProps> = ({ setIsHome }) => {
         () => {
           setLoading(false);
           showAlert({
-            show: true,
             text: "Thank you for your message 😃",
             type: "success",
           });
 
           setTimeout(() => {
-            hideAlert(false);
+            hideAlert();
             setCurrentAnimation("idle");
             setForm({
               name: "",
               email: "",
               message: "",
             });
-          }, [3000]);
+          }, 3000);
         },
         (error) => {
           setLoading(false);
@@ -73,7 +72,6 @@ const Contact: React.FC<IContactsProps> = ({ setIsHome }) => {
           setCurrentAnimation("idle");
 
           showAlert({
-            show: true,
             text: "I didn't receive your message 😢",
             type: "danger",
           });
@@ -125,7 +123,7 @@ const Contact: React.FC<IContactsProps> = ({ setIsHome }) => {
             Your Message
             <textarea
               name='message'
-              rows='4'
+              rows={4}
               className='textarea'
               placeholder='Write your thoughts here...'
               value={form.message}

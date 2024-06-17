@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, Suspense, useEffect, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 import Loader from '../Loader/Loader';
 import Island from '../../models/island';
@@ -6,7 +6,6 @@ import Sky from '../../models/Sky';
 import Bird from '../../models/Bird';
 import Plane from '../../models/Plane';
 import HomeInfo from './HomeInfo';
-import { Button } from '@mui/material';
 import ThemeModal from './ThemeModal';
 import Island2 from '../../models/island2';
 
@@ -19,13 +18,13 @@ interface IHomeProps {
   isHome: boolean;
 }
 
-const Home: React.FC<IHomeProps> = ({ isThemeOpen, setIsThemeOpen, selectedTheme, setSelectedTheme, isHome, setIsHome }) => {
+const Home: React.FC<IHomeProps> = ({ isThemeOpen, setIsThemeOpen, selectedTheme, setSelectedTheme, setIsHome }) => {
 
     const [currentStage, setCurrentStage] = useState(1);
     const [isRotating, setIsRotating] = useState(false);
 
     const adjustBiplaneForScreenSize = () => {
-        let screenScale, screenPosition;
+        let screenScale:[x: number, y: number, z: number], screenPosition:[x: number, y: number, z: number];
 
         // If screen width is less than 768px, adjust the scale and position
         if (window.innerWidth < 768) {
@@ -87,7 +86,7 @@ const Home: React.FC<IHomeProps> = ({ isThemeOpen, setIsThemeOpen, selectedTheme
                         intensity={2}
                     />
                     <hemisphereLight
-                        skyColor='#b1e1ff'
+                        color='#b1e1ff'
                         groundColor='#000000'
                         intensity={1}
                     />

@@ -1,4 +1,9 @@
-const Alert = ({ type, text }) => {
+interface IAlertProps {
+  type: string;
+  text: string;
+}
+
+const Alert: React.FC<IAlertProps> = ({ type, text  }) => {
   return (
     <div className='absolute top-10 left-0 right-0 flex justify-center items-center'>
       <div

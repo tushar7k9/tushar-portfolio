@@ -1,33 +1,31 @@
-import { meta, shopify, starbucks, tesla, kickdrum } from "../assets/images";
-import {
-    car,
-    contact,
-    css,
-    estate,
-    express,
-    git,
-    github,
-    html,
-    javascript,
-    linkedin,
-    mongodb,
-    motion,
-    mui,
-    nextjs,
-    nodejs,
-    pricewise,
-    react,
-    redux,
-    sass,
-    snapgram,
-    summiz,
-    tailwindcss,
-    threads,
-    typescript,
-    sort,
-    IBE,
-    Chatty
-} from "../assets/icons";
+import kickdrum from "../assets/images/kickdrum.png";
+import car from "../assets/icons/car.svg";
+import contact from "../assets/icons/contact.svg";
+import css from "../assets/icons/css.svg";
+import estate from "../assets/icons/estate.svg";
+import express from "../assets/icons/express.svg";
+import git from "../assets/icons/git.svg";
+import github from '../assets/icons/github.svg'
+import html from '../assets/icons/html.svg'
+import javascript from '../assets/icons/javascript.svg'
+import mongodb from '../assets/icons/mongodb.svg'
+import motion from '../assets/icons/motion.svg'
+import mui from '../assets/icons/mui.svg'
+import nextjs from '../assets/icons/nextjs.svg'
+import nodejs from '../assets/icons/nodejs.svg'
+import react from '../assets/icons/react.svg'
+import redux from '../assets/icons/redux.svg'
+import sass from '../assets/icons/sass.svg'
+import tailwindcss from '../assets/icons/tailwindcss.svg'
+import typescript from '../assets/icons/typescript.svg'
+import linkedin from '../assets/icons/linkedin.svg' 
+import pricewise from '../assets/icons/pricewise.svg'
+import snapgram from '../assets/icons/snapgram.svg'
+import summiz from '../assets/icons/summiz.svg'
+import threads from '../assets/icons/threads.svg' 
+import sort from '../assets/icons/sort.svg'
+import IBE from '../assets/icons/Ibe.svg'
+import Chatty from '../assets/icons/chatty.svg'
 
 export const skills = [
     {

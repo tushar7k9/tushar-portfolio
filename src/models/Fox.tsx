@@ -1,12 +1,40 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, RefObject } from "react";
 import { useGLTF, useAnimations } from "@react-three/drei";
+import { Group, Object3DEventMap, Material, Mesh, MeshStandardMaterial, } from "three";
+import { GLTF } from 'three-stdlib';
 
-import scene from "../assets/3d/fox.glb";
+type GLTFResult = GLTF & {
+  nodes: {
+    GLTF_created_0_rootJoint: object;
+    Object_7: any;
+    Object_8: any;
+    Object_9: any;
+    Object_10: any;
+    Object_11: any;
+    Cube: Mesh
+  }
+  materials: {
+    PaletteMaterial001: Material | Material[] | undefined;
+    Fortress: Material | Material[] | undefined;
+    Environment: Material | Material[] | undefined;
+    Sand: Material | Material[] | undefined;
+    ['Material.001']: MeshStandardMaterial
+  }
+}
 
-// 3D Model from: https://sketchfab.com/3d-models/fox-f372c04de44640fbb6a4f9e4e5845c78
-const Fox = ({ currentAnimation, ...props }) => {
-  const group = useRef();
-  const { nodes, materials, animations } = useGLTF(scene);
+interface IFoxProps {
+  currentAnimation: string;
+  position: [x: number, y: number, z: number];
+  rotation: [x: number, y: number, z: number];
+  scale: [x: number, y: number, z: number];
+}
+
+const Fox: React.FC<IFoxProps> = ({
+  currentAnimation, position, rotation, scale, 
+}) => {
+  const props = {position, rotation, scale};
+  const group: RefObject<Group<Object3DEventMap>> = useRef(null);
+  const { nodes, materials, animations } = useGLTF('src/assets/3d/fox.glb') as GLTFResult;
   const { actions } = useAnimations(animations, group);
 
   // This effect will run whenever the currentAnimation prop changes
@@ -56,7 +84,5 @@ const Fox = ({ currentAnimation, ...props }) => {
     </group>
   );
 }
-
-useGLTF.preload(scene);
 
 export default Fox;
