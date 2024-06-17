@@ -1,8 +1,8 @@
 import kickdrum from "../assets/images/kickdrum.png";
-import car from "../assets/icons/car.svg";
+// import car from "../assets/icons/car.svg";
 import contact from "../assets/icons/contact.svg";
 import css from "../assets/icons/css.svg";
-import estate from "../assets/icons/estate.svg";
+// import estate from "../assets/icons/estate.svg";
 import express from "../assets/icons/express.svg";
 import git from "../assets/icons/git.svg";
 import github from '../assets/icons/github.svg'
@@ -19,10 +19,10 @@ import sass from '../assets/icons/sass.svg'
 import tailwindcss from '../assets/icons/tailwindcss.svg'
 import typescript from '../assets/icons/typescript.svg'
 import linkedin from '../assets/icons/linkedin.svg' 
-import pricewise from '../assets/icons/pricewise.svg'
-import snapgram from '../assets/icons/snapgram.svg'
-import summiz from '../assets/icons/summiz.svg'
-import threads from '../assets/icons/threads.svg' 
+// import pricewise from '../assets/icons/pricewise.svg'
+// import snapgram from '../assets/icons/snapgram.svg'
+// import summiz from '../assets/icons/summiz.svg'
+// import threads from '../assets/icons/threads.svg' 
 import sort from '../assets/icons/sort.svg'
 import IBE from '../assets/icons/Ibe.svg'
 import Chatty from '../assets/icons/chatty.svg'
