@@ -40,7 +40,7 @@ const Plane : React.FC<IPlaneProps> = ({ isRotating, position, rotation, scale }
   const props = {position, rotation, scale};
   const ref = useRef<Mesh>(null);
   // Load the 3D model and its animations
-  const { scene, animations } = useGLTF('src/assets/3d/plane.glb') as GLTFResult;
+  const { scene, animations } = useGLTF('public/3d/plane.glb') as GLTFResult;
   // Get animation actions associated with the plane
   const { actions } = useAnimations(animations, ref);
 

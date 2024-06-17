@@ -34,7 +34,7 @@ const Fox: React.FC<IFoxProps> = ({
 }) => {
   const props = {position, rotation, scale};
   const group: RefObject<Group<Object3DEventMap>> = useRef(null);
-  const { nodes, materials, animations } = useGLTF('src/assets/3d/fox.glb') as GLTFResult;
+  const { nodes, materials, animations } = useGLTF('public/3d/fox.glb') as GLTFResult;
   const { actions } = useAnimations(animations, group);
 
   // This effect will run whenever the currentAnimation prop changes

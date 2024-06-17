@@ -41,7 +41,7 @@ const Island: React.FC<IslandProps> = ({
     const islandRef = useRef<Group>() as RefObject<Group>;
     // Get access to the Three.js renderer and viewport
     const { gl, viewport } = useThree();
-    const { nodes, materials } = useGLTF('src/assets/3d/island.glb') as GLTFResult;
+    const { nodes, materials } = useGLTF('public/3d/island.glb') as GLTFResult;
 
     // Use a ref for the last mouse x position
     const lastX = useRef(0);
