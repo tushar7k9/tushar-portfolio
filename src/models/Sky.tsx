@@ -1,5 +1,5 @@
 import { RefObject, useRef } from "react";
-import { useGLTF } from "@react-three/drei";
+import { useAnimations, useGLTF } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { Material, Mesh, MeshStandardMaterial, } from "three";
 import { GLTF } from 'three-stdlib';
@@ -33,14 +33,16 @@ interface ISkyProps {
 }
 
 const Sky: React.FC<ISkyProps> = ({ isRotating }) => {
-  const sky = useGLTF('/3d/sky.glb') as GLTFResult;
+  const { scene, animations } = useGLTF('/3d/sky.glb') as GLTFResult;
   const skyRef = useRef<Mesh>() as RefObject<Mesh>;
+
+  const { actions } = useAnimations(animations, skyRef);
 
   // Note: Animation names can be found on the Sketchfab website where the 3D model is hosted.
   // It ensures smooth animations by making the rotation frame rate-independent.
   // 'delta' represents the time in seconds since the last frame.
   useFrame((_, delta) => {
-    if (isRotating && skyRef.current) {
+    if (true && skyRef.current) {
       skyRef.current.rotation.y += 0.25 * delta; // Adjust the rotation speed as needed
     }
   });
@@ -49,7 +51,7 @@ const Sky: React.FC<ISkyProps> = ({ isRotating }) => {
     <mesh ref={skyRef}>
       // use the primitive element when you want to directly embed a complex 3D
       model or scene
-      <primitive object={sky.scene} />
+      <primitive object={scene} />
     </mesh>
   );
 }
