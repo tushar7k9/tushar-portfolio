@@ -1,5 +1,5 @@
 import { RefObject, useRef } from "react";
-import { useAnimations, useGLTF } from "@react-three/drei";
+import { useGLTF } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { Material, Mesh, MeshStandardMaterial, } from "three";
 import { GLTF } from 'three-stdlib';
@@ -32,11 +32,9 @@ interface ISkyProps {
   isRotating: boolean;
 }
 
-const Sky: React.FC<ISkyProps> = ({ isRotating }) => {
-  const { scene, animations } = useGLTF('/3d/sky.glb') as GLTFResult;
+const Sky: React.FC<ISkyProps> = () => {
+  const { scene } = useGLTF('/3d/sky.glb') as GLTFResult;
   const skyRef = useRef<Mesh>() as RefObject<Mesh>;
-
-  const { actions } = useAnimations(animations, skyRef);
 
   // Note: Animation names can be found on the Sketchfab website where the 3D model is hosted.
   // It ensures smooth animations by making the rotation frame rate-independent.
