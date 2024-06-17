@@ -33,7 +33,7 @@ interface ISkyProps {
 }
 
 const Sky: React.FC<ISkyProps> = ({ isRotating }) => {
-  const sky = useGLTF('public/3d/sky.glb') as GLTFResult;
+  const sky = useGLTF('/3d/sky.glb') as GLTFResult;
   const skyRef = useRef<Mesh>() as RefObject<Mesh>;
 
   // Note: Animation names can be found on the Sketchfab website where the 3D model is hosted.

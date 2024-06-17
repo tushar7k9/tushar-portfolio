@@ -10,7 +10,7 @@ const Bird = () => {
   const birdRef = useRef<Mesh>(null);
 
   // Load the 3D model and animations from the provided GLTF file
-  const { scene, animations } = useGLTF('public/3d/bird.glb') as GLTFResult;
+  const { scene, animations } = useGLTF('/3d/bird.glb') as GLTFResult;
 
   // Get access to the animations for the bird
   const { actions } = useAnimations(animations, birdRef);

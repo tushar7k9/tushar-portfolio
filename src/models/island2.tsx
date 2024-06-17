@@ -39,7 +39,7 @@ const Island2: React.FC<Island2Props> = ({
     const islandRef = useRef<Group>() as RefObject<Group>;
     // Get access to the Three.js renderer and viewport
     const { gl, viewport } = useThree();
-    const { nodes, materials } = useGLTF('public/3d/sea_keep_lonely_watcher.glb') as GLTFResult;
+    const { nodes, materials } = useGLTF('/3d/sea_keep_lonely_watcher.glb') as GLTFResult;
 
 
     // Use a ref for the last mouse x position
